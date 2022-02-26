@@ -1,3 +1,5 @@
+#### 爆改自用版。
+
 <!-- # GoIndex-theme-nexmoe -->
 
 主题基于 [yanzai/goindex](https://github.com/yanzai/goindex)
