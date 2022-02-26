@@ -424,6 +424,7 @@ function append_files_to_list(path, files) {
                 get_file(p, item, function(data) {
                     markdown("#head_md", data);
                 });
+		    continue
             }
             var ext = p.split('.').pop().toLowerCase();
             const file_view = ThemeConfig.view;
