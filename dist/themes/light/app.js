@@ -1,16 +1,6 @@
 // 在head 中 加载 必要静态
 
-// Dplayer
-document.write('<script src="//cdn.jsdelivr.net/npm/hls.js@1.0.7/dist/hls.min.js"></script>');
-document.write('<script src="//cdn.jsdelivr.net/npm/dashjs@4.0.1/dist/dash.all.debug.min.js"></script>');
-document.write('<script src="//cdn.jsdelivr.net/npm/flv.js@1.6.1/dist/flv.min.js"></script>');
-document.write('<script src="//cdn.jsdelivr.net/npm/cdnbye@latest"></script>');
-document.write('<script src="//cdn.jsdelivr.net/npm/dplayer@1.26.0/dist/DPlayer.min.js"></script>');
-// plyr
-document.write('<script src="//cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>');
-document.write('<script src="//cdn.dashjs.org/latest/dash.all.min.js"></script>');
-document.write('<script src="//cdn.jsdelivr.net/npm/plyr@3.6.8/dist/plyr.min.js"></script>');
-// markdown支持
+
 document.write('<script src="//cdn.jsdelivr.net/npm/markdown-it@12.1.0/dist/markdown-it.min.js"></script>');
 document.write('<style>.bimg{background-image: url(' + ThemeConfig.bimg + ');}.mdui-appbar .mdui-toolbar{height:56px;font-size:1pc}.mdui-toolbar>*{padding:0 6px;margin:0 2px}.mdui-toolbar>i{opacity:.5}.mdui-toolbar>i{padding:0}.mdui-toolbar>a:hover,a.active,a.mdui-typo-headline{opacity:1}.mdui-list-item{transition:none}.mdui-list>.th{background-color:initial}.mdui-list-item>a{width:100%;line-height:3pc}.mdui-list-item{margin:2px 0;padding:0}.mdui-toolbar>a:last-child{opacity:1}.mdui-container{width:100%!important;margin:0 auto;}</style>');
 
@@ -277,15 +267,15 @@ function list(path) {
     <ul class="mdui-list"> 
      <li class="mdui-list-item th"> 
       <div class="mdui-col-xs-12 mdui-col-sm-7">
-       文件
+       檔案名稱
   <i class="mdui-icon material-icons icon-sort" data-sort="name" data-order="more">expand_more</i>
       </div> 
       <div class="mdui-col-sm-3 mdui-text-right">
-       修改时间
+       修改時間
   <i class="mdui-icon material-icons icon-sort" data-sort="date" data-order="downward">expand_more</i>
       </div> 
       <div class="mdui-col-sm-2 mdui-text-right">
-       大小
+       檔案大小
   <i class="mdui-icon material-icons icon-sort" data-sort="size" data-order="downward">expand_more</i>
       </div> 
       </li> 
@@ -301,7 +291,8 @@ function list(path) {
 
     var password = localStorage.getItem('password' + path);
     $('#list').html(`<div class="mdui-progress"><div class="mdui-progress-indeterminate"></div></div>`);
-
+    $('#readme_md').hide().html('');
+    $('#head_md').hide().html('');
     /**
      * 列目录请求成功返回数据后的回调
      * @param res 返回的结果(object)
@@ -378,7 +369,7 @@ function list(path) {
         successResultCallback,
         function(path) {
             $('#spinner').remove();
-            var pass = prompt("目录加密, 请输入密码", "");
+            var pass = prompt("目錄加密, 請輸入密碼", "");
             localStorage.setItem('password' + path, pass);
             if (pass != null && pass != "") {
                 list(path);
@@ -399,14 +390,14 @@ function append_files_to_list(path, files) {
     var is_lastpage_loaded = null === $list.data('nextPageToken');
     var is_firstpage = '0' == $list.data('curPageIndex');
 
-    html = "";
-    let targetFiles = [];
-    for (i in files) {
-        var item = files[i];
-        var p = path + item.name + '/';
-        if (item['size'] == undefined) {
-            item['size'] = "";
-        }
+  html = "";
+  let targetFiles = [];
+  for (i in files) {
+    var item = files[i];
+    var p = path+encodeURIComponent(item.name) + '/';
+    if (item['size'] == undefined) {
+      item['size'] = "";
+    }
 
         item['modifiedTime'] = utc2beijing(item['modifiedTime']);
         item['size'] = formatFileSize(item['size']);
@@ -421,9 +412,9 @@ function append_files_to_list(path, files) {
               </a>
           </li>`;
         } else {
-            var p = path + item.name;
-            const filepath = path + item.name;
-            var c = "file";
+      var p = path+encodeURIComponent(item.name);
+      const filepath = path+encodeURIComponent(item.name);
+      var c = "file";
             // 当加载完最后一页后，才显示 README ，否则会影响滚动事件
             if (is_lastpage_loaded && item.name == "README.md") {
                 get_file(p, item, function(data) {
@@ -507,15 +498,15 @@ function render_search_result_list() {
     <ul class="mdui-list"> 
      <li class="mdui-list-item th"> 
       <div class="mdui-col-xs-12 mdui-col-sm-7">
-       文件
+       檔案名稱
   <i class="mdui-icon material-icons icon-sort" data-sort="name" data-order="more">expand_more</i>
       </div> 
       <div class="mdui-col-sm-3 mdui-text-right">
-       修改时间
+       修改時間
   <i class="mdui-icon material-icons icon-sort" data-sort="date" data-order="downward">expand_more</i>
       </div> 
       <div class="mdui-col-sm-2 mdui-text-right">
-       大小
+       檔案大小
   <i class="mdui-icon material-icons icon-sort" data-sort="size" data-order="downward">expand_more</i>
       </div> 
       </li> 
@@ -635,23 +626,26 @@ function append_search_result_to_list(files) {
               </a>
           </li>`;
         } else {
-            var c = "file";
-            var ext = item.name.split('.').pop().toLowerCase();
-            const file_view = ThemeConfig.view;
-            if (file_view.indexOf(`|${ext}|`) >= 0) {
-                c += " view";
-            }
-            html += `<li class="mdui-list-item file mdui-ripple" target="_blank"><a id="${item['id']}" gd-type="${item.mimeType}" onclick="onSearchResultItemClick(this)" class="${c}">
-            <div class="mdui-col-xs-12 mdui-col-sm-7 mdui-text-truncate" title="${item.name}">
-            <i class="mdui-icon material-icons">insert_drive_file</i>
-              ${item.name}
-            </div>
-            <div class="mdui-col-sm-3 mdui-text-right">${item['modifiedTime']}</div>
-            <div class="mdui-col-sm-2 mdui-text-right">${item['size']}</div>
-            </a>
-        </li>`;
-        }
+      switch(item.name) { // 隱藏項目
+				case 'README.md':
+					continue
+				case 'HEAD.md':
+					continue
+			}
+
+      var c = "file";
+      var ext = item.name.split('.').pop().toLowerCase();
+      html += `<li class="mdui-list-item file mdui-ripple" target="_blank"><a id="${item['id']}" gd-type="${item.mimeType}" onclick="onSearchResultItemClick(this)" class="${c}">
+	          <div class="mdui-col-xs-12 mdui-col-sm-7 mdui-text-truncate" title="${item.name}">
+	          <i class="mdui-icon material-icons">insert_drive_file</i>
+	            ${item.name}
+	          </div>
+	          <div class="mdui-col-sm-3 mdui-text-right">${item['modifiedTime']}</div>
+	          <div class="mdui-col-sm-2 mdui-text-right">${item['size']}</div>
+	          </a>
+	      </li>`;
     }
+  }
 
     // 是第1页时，去除横向loading条
     $list.html(($list.data('curPageIndex') == '0' ? '' : $list.html()) + html);
@@ -691,23 +685,23 @@ function onSearchResultItemClick(a_ele) {
                 modal: true,
                 closeOnEsc: true,
                 buttons: [{
-                    text: '打开',
-                    onClick: function() {
-                        window.location.href = href
-                    }
-                }, {
-                    text: '新标签中打开',
-                    onClick: function() {
-                        window.open(href)
-                    }
-                }, { text: '取消' }]
-            });
-            return;
-        }
-        dialog.close();
-        dialog = mdui.dialog({
-            title: '<i class="mdui-icon material-icons">&#xe811;</i>获取目标路径失败',
-            content: 'o(╯□╰)o 可能是因为该盘中并不存在此项！也可能因为没有把【与我共享】的文件添加到个人云端硬盘中！',
+            text: '打開', onClick: function () {
+              window.location.href = href
+            }
+          }, {
+            text: '新頁籤中打開', onClick: function () {
+              window.open(href)
+            }
+          }
+          , {text: '取消'}
+        ]
+      });
+      return;
+    }
+    dialog.close();
+    dialog = mdui.dialog({
+      title: '<i class="mdui-icon material-icons">&#xe811;</i>無法讀取或找不到目標',
+      content: '可能因為硬碟中並不存在此項！',
             history: false,
             modal: true,
             closeOnEsc: true,
@@ -1272,20 +1266,20 @@ function utc2beijing(utc_datetime) {
 
 // bytes自适应转换到KB,MB,GB
 function formatFileSize(bytes) {
-    if (bytes >= 1000000000) {
-        bytes = (bytes / 1000000000).toFixed(2) + ' GB';
-    } else if (bytes >= 1000000) {
-        bytes = (bytes / 1000000).toFixed(2) + ' MB';
-    } else if (bytes >= 1000) {
-        bytes = (bytes / 1000).toFixed(2) + ' KB';
-    } else if (bytes > 1) {
-        bytes = bytes + ' bytes';
-    } else if (bytes == 1) {
-        bytes = bytes + ' byte';
-    } else {
-        bytes = '';
-    }
-    return bytes;
+  if (bytes >= 1073741824) {
+    bytes = (bytes / 1073741824).toFixed(2) + ' GB';
+  } else if (bytes >= 1048576) {
+    bytes = (bytes / 1048576).toFixed(2) + ' MB';
+  } else if (bytes >= 1024) {
+    bytes = (bytes / 1024).toFixed(2) + ' KB';
+  } else if (bytes > 1) {
+    bytes = bytes + ' bytes';
+  } else if (bytes == 1) {
+    bytes = bytes + ' byte';
+  } else {
+    bytes = '';
+  }
+  return bytes;
 }
 
 String.prototype.trim = function(char) {
