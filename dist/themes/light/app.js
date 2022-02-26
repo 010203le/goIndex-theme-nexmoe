@@ -1,6 +1,4 @@
 // 在head 中 加载 必要静态
-
-
 document.write('<script src="//cdn.jsdelivr.net/npm/markdown-it@12.1.0/dist/markdown-it.min.js"></script>');
 document.write('<style>.bimg{background-image: url(' + ThemeConfig.bimg + ');}.mdui-appbar .mdui-toolbar{height:56px;font-size:1pc}.mdui-toolbar>*{padding:0 6px;margin:0 2px}.mdui-toolbar>i{opacity:.5}.mdui-toolbar>i{padding:0}.mdui-toolbar>a:hover,a.active,a.mdui-typo-headline{opacity:1}.mdui-list-item{transition:none}.mdui-list>.th{background-color:initial}.mdui-list-item>a{width:100%;line-height:3pc}.mdui-list-item{margin:2px 0;padding:0}.mdui-toolbar>a:last-child{opacity:1}.mdui-container{width:100%!important;margin:0 auto;}</style>');
 
@@ -14,6 +12,16 @@ function init() {
     var names = window.drive_names;
     var search_text = model.is_search_page ? (model.q || '') : '';
 
+    // 搜索
+	  var search_bar = `<div class="mdui-toolbar-spacer"></div>
+        <div id="search_bar" class="mdui-textfield mdui-textfield-expandable mdui-float-right mdui-textfield-expanded}" style="max-width:${isMobile ? 300 : 400}px">
+            <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" onclick="if($('#search_bar').hasClass('mdui-textfield-expanded') && $('#search_bar_form>input').val()) $('#search_bar_form').submit();">
+                <i class="mdui-icon material-icons">search</i>
+            </button>
+            <form id="search_bar_form" method="get" action="/${cur}:search">
+			    <input class="mdui-textfield-input" type="text" name="q" autocomplete ="off" placeholder="搜尋" value="${search_text}"/>
+                        </form>
+                    </div>`;
 
     // 盘
     var pan_bar = `
@@ -183,27 +191,28 @@ function nav(path) {
             }
         }
     }
-  var search_text = model.is_search_page ? (model.q || '') : '';
-  const isMobile = Os.isMobile;
-  var search_bar = `<div class="mdui-toolbar-spacer"></div>
-        <div id="search_bar" class="mdui-textfield mdui-textfield-expandable mdui-float-right mdui-textfield-expanded}" style="max-width:${isMobile ? 300 : 400}px">
-            <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" onclick="if($('#search_bar').hasClass('mdui-textfield-expanded') && $('#search_bar_form>input').val()) $('#search_bar_form').submit();">
-                <i class="mdui-icon material-icons">search</i>
-            </button>
-            <form id="search_bar_form" method="get" action="/${cur}:search">
-            <input class="mdui-textfield-input" type="text" name="q" autocomplete ="off" placeholder="搜尋" value="${search_text}"/>
-            </form>
-        </div>`;
+    // var search_text = model.is_search_page ? (model.q || '') : '';
+    // const isMobile = Os.isMobile;
+    // var search_bar = `<div class="mdui-toolbar-spacer"></div>
+    //       <div id="search_bar" class="mdui-textfield mdui-textfield-expandable mdui-float-right ${model.is_search_page ? 'mdui-textfield-expanded' : ''}" style="max-width:${isMobile ? 300 : 400}px">
+    //           <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" onclick="if($('#search_bar').hasClass('mdui-textfield-expanded') && $('#search_bar_form>input').val()) $('#search_bar_form').submit();">
+    //               <i class="mdui-icon material-icons">search</i>
+    //           </button>
+    //           <form id="search_bar_form" method="get" action="/${cur}:search">
+    //           <input class="mdui-textfield-input" type="text" name="q" placeholder="Search in current drive" value="${search_text}"/>
+    //           </form>
+    //           <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i></button>
+    //       </div>`;
 
-  // 个人盘 或 团队盘
-  if (model.root_type < 2) {
-    // 显示搜索框
-    html += search_bar;
-  }
+    // // 个人盘 或 团队盘
+    // if (model.root_type < 2) {
+    //   // 显示搜索框
+    //   html += search_bar;
+    // }
 
-  $('#nav').html(html);
-  mdui.mutation();
-  mdui.updateTextFields();
+    $('#nav').html(html);
+    mdui.mutation();
+    mdui.updateTextFields();
 }
 
 /**
