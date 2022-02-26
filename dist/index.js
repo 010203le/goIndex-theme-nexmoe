@@ -42,7 +42,7 @@ const authConfig = {
       protect_file_link: false
     }
   ],
-  /**
+   /**
    * 文件列表页面每页显示的数量。【推荐设置值为 100 到 1000 之间】；
    * 如果设置大于1000，会导致请求 drive api 时出错；
    * 如果设置的值过小，会导致文件列表页面滚动条增量加载（分页加载）失效；
@@ -71,7 +71,7 @@ const authConfig = {
  */
 const themeConfig = {
   // 仓库地址
-  "url": "//cdn.jsdelivr.net/gh/5MayRain/goIndex-theme-nexmoe",
+  "url": "//cdn.jsdelivr.net/gh/010203le/goIndex-theme-nexmoe",
   // 主题 ( light:亮色 | dark:深色 )
   "theme": "light", 
   // 主色
@@ -79,41 +79,37 @@ const themeConfig = {
   // 强调色
   "accent_color": "blue",
   // 头像
-  "avatar": "//cdn.jsdelivr.net/gh/5MayRain/ImageHosting/Blog/Website/avatar.png",
+  "avatar": "//cdn.jsdelivr.net/gh/010203le/73vg.co/titlev2.png",
   // 背景图片
-  "bimg": "//cdn.jsdelivr.net/gh/5MayRain/ImageHosting/Blog/Posts/2021/07/20/cover_01.jpg",
+  "bimg": "//ptpimg.me/273qk0.jpg",
   // 显示菜单
-  "menu_show": true,
+  "menu_show": false,
   // 菜单组
   "menus": [
     {
-      name: "Blog",
-      url: "//mrzgh.top"
-    },
-    {
-      name: "Log in",
-      url: "//drive.google.com"
+      name: "#0",
+      url: "//google.com"
     }
   ],
   // 定义可预览的文件
-  "view": "|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|flac|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|m3u8|",
+  "view": "",
   // 使用 DPlayer 播放，未填入的默认使用 Plyr 播放
-  "player_dp": "|m3u8|flv|",
+  "player_dp": "",
   // 缩略图组
   "thumbnails": [
     {
       name: "dplayer",
-      url: "Thumbnail/dplayer.jpg"
+      url: ""
     },
     {
       name: "plyr",
-      url: "Thumbnail/plyr.vtt"
+      url: ""
     }
   ],
   // 视频封面，${fileName} 表示当前视频的名字
-  "video_cover": "${fileName}.jpg",
+  "video_cover": "",
   // 视频字幕
-  "video_subtitle": "${fileName}.vtt",
+  "video_subtitle": "",
 };
 
 /**
