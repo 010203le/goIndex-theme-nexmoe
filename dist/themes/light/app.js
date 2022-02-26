@@ -13,16 +13,7 @@ function init() {
     var cur = window.current_drive_order || 0;
     var names = window.drive_names;
     var search_text = model.is_search_page ? (model.q || '') : '';
-    // 搜索
-  var search_bar = `<div class="mdui-toolbar-spacer"></div>
-        <div id="search_bar" class="mdui-textfield mdui-textfield-expandable mdui-float-right mdui-textfield-expanded}" style="max-width:${isMobile ? 300 : 400}px">
-            <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" onclick="if($('#search_bar').hasClass('mdui-textfield-expanded') && $('#search_bar_form>input').val()) $('#search_bar_form').submit();">
-                <i class="mdui-icon material-icons">search</i>
-            </button>
-            <form id="search_bar_form" method="get" action="/${cur}:search">
-            <input class="mdui-textfield-input" type="text" name="q" autocomplete ="off" placeholder="搜尋" value="${search_text}"/>
-            </form>
-        </div>`;
+
 
     // 盘
     var pan_bar = `
@@ -192,28 +183,27 @@ function nav(path) {
             }
         }
     }
-    // var search_text = model.is_search_page ? (model.q || '') : '';
-    // const isMobile = Os.isMobile;
-    // var search_bar = `<div class="mdui-toolbar-spacer"></div>
-    //       <div id="search_bar" class="mdui-textfield mdui-textfield-expandable mdui-float-right ${model.is_search_page ? 'mdui-textfield-expanded' : ''}" style="max-width:${isMobile ? 300 : 400}px">
-    //           <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" onclick="if($('#search_bar').hasClass('mdui-textfield-expanded') && $('#search_bar_form>input').val()) $('#search_bar_form').submit();">
-    //               <i class="mdui-icon material-icons">search</i>
-    //           </button>
-    //           <form id="search_bar_form" method="get" action="/${cur}:search">
-    //           <input class="mdui-textfield-input" type="text" name="q" placeholder="Search in current drive" value="${search_text}"/>
-    //           </form>
-    //           <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i></button>
-    //       </div>`;
+  var search_text = model.is_search_page ? (model.q || '') : '';
+  const isMobile = Os.isMobile;
+  var search_bar = `<div class="mdui-toolbar-spacer"></div>
+        <div id="search_bar" class="mdui-textfield mdui-textfield-expandable mdui-float-right mdui-textfield-expanded}" style="max-width:${isMobile ? 300 : 400}px">
+            <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" onclick="if($('#search_bar').hasClass('mdui-textfield-expanded') && $('#search_bar_form>input').val()) $('#search_bar_form').submit();">
+                <i class="mdui-icon material-icons">search</i>
+            </button>
+            <form id="search_bar_form" method="get" action="/${cur}:search">
+            <input class="mdui-textfield-input" type="text" name="q" autocomplete ="off" placeholder="搜尋" value="${search_text}"/>
+            </form>
+        </div>`;
 
-    // // 个人盘 或 团队盘
-    // if (model.root_type < 2) {
-    //   // 显示搜索框
-    //   html += search_bar;
-    // }
+  // 个人盘 或 团队盘
+  if (model.root_type < 2) {
+    // 显示搜索框
+    html += search_bar;
+  }
 
-    $('#nav').html(html);
-    mdui.mutation();
-    mdui.updateTextFields();
+  $('#nav').html(html);
+  mdui.mutation();
+  mdui.updateTextFields();
 }
 
 /**
